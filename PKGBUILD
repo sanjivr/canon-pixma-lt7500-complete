@@ -11,12 +11,14 @@ pkgdesc='Complete driver set (printing and scanning) for Canon Pixma TR7500 seri
 url='http://www.canon.co.uk/Support/Consumer_Products/product_ranges/printers/pixma/index.aspx'
 license=(custom)
 arch=(i686 x86_64)
-depends=(libcups popt libpng12 libusb-compat libtiff)
+depends=(libcups popt libpng12 libusb-compat libtiff gtk2)
 source=(
+    scangearmp2.desktop
 	http://gdlp01.c-wss.com/gds/8/0100009108/01/cnijfilter2-${_cnijfilterver}-1-deb.tar.gz
 	http://gdlp01.c-wss.com/gds/1/0100009111/01/scangearmp2-${_scangearmpver}-1-deb.tar.gz
 )
-sha256sums=('d90c16e3050e9676db51d3db4b1157416d2cc950b2f2e8b9f0d4c178a94cbbd0'
+sha256sums=('d9b449d6c78c92f296acef85209b30c7d80b8bac692f135d071730ef0051d64b'
+            'd90c16e3050e9676db51d3db4b1157416d2cc950b2f2e8b9f0d4c178a94cbbd0'
             '4a500f4c62fa30f4ded100aa07c95f3ee24ec1afbf2269222fc7801399b19b0a')
 
 case $CARCH in
@@ -25,6 +27,9 @@ case $CARCH in
 esac
 
 package() {
+	mkdir -p "$pkgdir/usr/share/applications"
+	install -m755 "scangearmp2.desktop" "$pkgdir/usr/share/applications"
+
     cd "$srcdir/cnijfilter2-${_cnijfilterver}-1-deb/packages"
     ar x "cnijfilter2_${_cnijfilterver}-1_$_CARCH.deb"
     tar xf data.tar.gz -C "$pkgdir" --strip-components=1
